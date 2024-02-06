@@ -1,0 +1,58 @@
+.heading{
+    font-family: AvertaStd-Bold;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -1.28px;
+    background:  #330bb7;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 2rem 2rem;
+}
+
+.filters{
+    margin: 2rem 3rem;
+    display: flex;
+    flex-direction: row;
+    font-family: AvertaStd-Bold;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 200;
+
+}
+
+.visualBody{
+    display: flex;
+    flex-wrap: wrap; 
+    width: 1500px;
+
+}
+
+.visual{
+    border-radius: 16.893px;
+    background: #FFF;
+    margin: 2rem 2rem;
+    width: 500px;
+    padding: 2rem;
+
+}
+
+.visual h1{
+    color: #15192C;
+    font-family: Averta-Semibold;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.338px;
+    background-color: rgb(196, 211, 223);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+  /* overflow: hidden; */
+    /* background-clip: text; */
+    /* -webkit-background-clip: text; */
+    /* -webkit-text-fill-color: transparent; */
+}
