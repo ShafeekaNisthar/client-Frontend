@@ -3,18 +3,18 @@ import React from 'react';
 const RangeInput = ({ label, value, onChange }) => {
   return (
     <label>
-      {label} Range:  
+      {label} : 
       <input
         type='number'
         placeholder='Min'
-        value={value.min}
-        onChange={(e) => onChange({ ...value, min: parseFloat(e.target.value) })}
+        value={value[0]}
+        onChange={(e) => onChange([parseInt(e.target.value), value[1]])}
       />
       <input
         type='number'
         placeholder='Max'
-        value={value.max}
-        onChange={(e) => onChange({ ...value, max: parseFloat(e.target.value) })}
+        value={value[1]}
+        onChange={(e) => onChange([value[0], parseInt(e.target.value)])}
       />
     </label>
   );
