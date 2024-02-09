@@ -15,25 +15,38 @@ const ParentComponent = () => {
   const [selectedProductCategory, setselectedProductCategory] = useState(initialDropdown);
   const [Range, setRange] = useState(initialRange)
   
-  const [filters, setFilters] = useState<any>({
+  const [backendfilters, setbackendfilters] = useState<any>({
+    product_field: initialDropdown
+  })
+
+  const [frontendfilters, setfrontendfilters] = useState<any>({
     region: initialDropdown,
-    product_field: initialDropdown,
     transaction_amount: initialRange,
   })
 
-  const handleFilterChange = () => {
-    console.log(Range)
-    const newFilters = {
-      region: selectedregion,
+  const handleBEFilterChange = () => {
+    console.log("inside BE filter change")
+    const BEFilters = {
       product_field: selectedProductCategory,
+    };
+    setbackendfilters(BEFilters);
+  };
+
+  const handleFEFilterChange = () => {
+    console.log("inside FE filter change")
+    const FEFilters = {
+      region: selectedregion,
       transaction_amount: Range,
     };
-    setFilters(newFilters);
+    setfrontendfilters(FEFilters);
   };
 
   useEffect(() => {  
-    handleFilterChange()
-  }, [selectedregion,selectedProductCategory, Range])  //add Range filter here if necessary
+    handleBEFilterChange()
+  }, [selectedProductCategory])  //add Range filter here if necessary
+  useEffect(() => {  
+    handleFEFilterChange()
+  }, [selectedregion, Range])  //add Range filter here if necessary
 
 
   return (
@@ -65,7 +78,7 @@ const ParentComponent = () => {
        <div className='visualBody'>
          <div className='visual'>
           <h1>Average sales by year</h1>
-          <VisualMount ChartID='24' filters={filters}/>
+          <VisualMount ChartID='23' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
          </div>
 
         {/* <div className='visual'>
