@@ -10,7 +10,7 @@ import { VisualMount } from 'cerulean-bi-react'
 
 const ParentComponent = () => {
   const initialDropdown = "All"; 
-  const initialRange = [ 0, 250000 ];
+  const initialRange = [ -800001, 250000 ];
   const [selectedregion, setSelectedRegion] = useState(initialDropdown);
   const [selectedProductCategory, setselectedProductCategory] = useState(initialDropdown);
   const [Range, setRange] = useState(initialRange)
@@ -76,23 +76,22 @@ const ParentComponent = () => {
           />
         </div>
        <div className='visualBody'>
-         <div className='visual'>
-          <h1>Average sales by year</h1>
-          <VisualMount ChartID='23' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
-         </div>
-
-        {/* <div className='visual'>
+        <div className='visual'>
           <h1>Number of Sales per Region</h1>
-          <VisualMount ChartID='15' filters={filters}/></div> */}
-        {/* <div className='visual'>
+          <VisualMount ChartID='15' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
+        </div>
+        <div className='visual'>
           <h1>Proportion of Sales per Product Category</h1>
-          <VisualMount ChartID='23' filters={filters}/></div>
+          <VisualMount ChartID='23' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
+        </div>
         <div className='visual' style={{width:'300px'}}>
           <h1>Average Sales per Day of Week</h1>
-          <VisualMount ChartID='19' filters={filters}/></div> */}
-        {/* <div className='visual'>
+          <VisualMount ChartID='19' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
+        </div>
+        <div className='visual'>
           <h1>Average Sales per Year</h1>
-              <VisualMount ChartID='21' filters={filters}/></div> */}
+              <VisualMount ChartID='21' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
+        </div>
         </div> 
     </div>
   )
