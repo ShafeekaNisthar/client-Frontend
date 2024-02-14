@@ -78,19 +78,19 @@ const ParentComponent = () => {
        <div className='visualBody'>
         <div className='visual'>
           <h1>Number of Sales per Region</h1>
-          <VisualMount ChartID='15' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
+          <VisualMount ChartID='15' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
         </div>
         <div className='visual'>
           <h1>Proportion of Sales per Product Category</h1>
-          <VisualMount ChartID='23' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
+          <VisualMount ChartID='23' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
         </div>
         <div className='visual' style={{width:'300px'}}>
           <h1>Average Sales per Day of Week</h1>
-          <VisualMount ChartID='19' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
+          <VisualMount ChartID='19' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
         </div>
         <div className='visual'>
           <h1>Average Sales per Year</h1>
-              <VisualMount ChartID='21' FEfilters = {frontendfilters} BEfilters = {backendfilters}/>
+              <VisualMount ChartID='21' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
         </div>
         </div> 
     </div>
