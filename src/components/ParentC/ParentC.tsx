@@ -9,7 +9,7 @@ import { VisualMount } from 'cerulean-bi-react'
 
 
 const ParentComponent = () => {
-  const initialDropdown = "All"; 
+  const initialDropdown = ["All"]; 
   const initialRange = [ -800001, 250000 ];
   const [selectedregion, setSelectedRegion] = useState(initialDropdown);
   const [selectedProductCategory, setselectedProductCategory] = useState(initialDropdown);
@@ -41,6 +41,9 @@ const ParentComponent = () => {
     setfrontendfilters(FEFilters);
   };
 
+  // const EditSpec={}
+  // const EditSpec1={"color":"region", "y_title":"Count of Sales"}
+
   useEffect(() => {  
     handleBEFilterChange()
   }, [selectedProductCategory])  //add Range filter here if necessary
@@ -58,7 +61,7 @@ const ParentComponent = () => {
                 options={["All","Asia","Americas","Oceania","Africa","Europe"]}
                 value={selectedregion}
                 onChange={(value:string)=> {
-                  setSelectedRegion(value);
+                  setSelectedRegion([value]);
                 }}
           />
           <Dropdown
@@ -66,7 +69,7 @@ const ParentComponent = () => {
                 options={["All","Beverages","Clothes","Food","Grocery","Homeware","Toy"]}
                 value={selectedProductCategory}
                 onChange={(value:string)=> {
-                  setselectedProductCategory(value);
+                  setselectedProductCategory([value]);
                 }}
           />
           <RangeInput
@@ -80,7 +83,7 @@ const ParentComponent = () => {
           <h1>Number of Sales per Region</h1>
           <VisualMount ChartID='15' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
         </div>
-        <div className='visual'>
+        {/* <div className='visual'>
           <h1>Proportion of Sales per Product Category</h1>
           <VisualMount ChartID='23' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
         </div>
@@ -91,7 +94,7 @@ const ParentComponent = () => {
         <div className='visual'>
           <h1>Average Sales per Year</h1>
               <VisualMount ChartID='21' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
-        </div>
+        </div> */}
         </div> 
     </div>
   )
