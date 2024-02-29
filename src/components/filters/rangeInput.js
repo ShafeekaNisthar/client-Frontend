@@ -2,6 +2,7 @@ import React from 'react';
 
 const RangeInput = ({ label, value, onChange }) => {
   return (
+    <div className='range'>
     <label>
       {label} : 
       <input
@@ -17,6 +18,7 @@ const RangeInput = ({ label, value, onChange }) => {
         onChange={(e) => onChange([value[0], parseInt(e.target.value)])}
       />
     </label>
+    </div>
   );
 };
 

@@ -1,75 +1,111 @@
 'use client'
 import Dropdown from '../filters/dropdown'
 import RangeInput from '../filters/rangeInput'
-import { useState, useEffect } from 'react'
+import CheckBoxFilter from '../filters/checkbox'
+import { useState, useEffect, SetStateAction } from 'react'
 import './ParentC.css'
-import { VisualMount } from 'cerulean-bi-react'
-
+import { VisualMount, CreateBEFilter } from 'cerulean-bi-react'
+// import CreateBEFilters from '../filters/CreateBEFilters'
+// import getUniqueValues from '../filters/UniqueValues'
 
 
 
 const ParentComponent = () => {
-  const initialDropdown = ["All"]; 
+  const initialDropdown = "ALL" 
   const initialRange = [ -800001, 250000 ];
-  const [selectedregion, setSelectedRegion] = useState(initialDropdown);
+  const [selectedregion, setSelectedRegion] = useState([]);
   const [selectedProductCategory, setselectedProductCategory] = useState(initialDropdown);
   const [Range, setRange] = useState(initialRange)
   
-  const [backendfilters, setbackendfilters] = useState<any>({
-    product_field: initialDropdown
-  })
+  const [backendfilters, setbackendfilters] = useState<any>({})
 
-  const [frontendfilters, setfrontendfilters] = useState<any>({
-    region: initialDropdown,
-    transaction_amount: initialRange,
-  })
+  // const [frontendfilters, setfrontendfilters] = useState<any>({
+  //   region: initialDropdown,
+  //   transaction_amount: initialRange,
+  // })
+
+  // getting unique values
+  // const regions = getUniqueValues("v10500", "region")
+  // console.log("from unique values:", regions)
 
   const handleBEFilterChange = () => {
-    console.log("inside BE filter change")
-    const BEFilters = {
-      product_field: selectedProductCategory,
-    };
+
+   const filterDefinitions = [
+          {
+              filtername: "filter1",
+              table: "v10500",
+              column: "region",
+              operator: "In",
+              values: selectedregion.length === 0 ? ["ALL"] : selectedregion,
+          },
+          {
+              filtername: "filter2",
+              table: "v10500",
+              column: "product_field",
+              operator: "In",
+              values: [selectedProductCategory],
+          },
+          {
+              filtername: "filter3",
+              table: "v10500",
+              column: "transaction_amount",
+              operator: "LessThan",
+              values: Range[1],
+          },
+          {
+              filtername: "filter4",
+              table: "v10500",
+              column: "transaction_amount",
+              operator: "GreaterThan",
+              values: Range[0],
+          },
+      ];
+
+    const BEFilters = CreateBEFilter(filterDefinitions)
+    
+    console.log(BEFilters)
+  
     setbackendfilters(BEFilters);
   };
 
-  const handleFEFilterChange = () => {
-    console.log("inside FE filter change")
-    const FEFilters = {
-      region: selectedregion,
-      transaction_amount: Range,
-    };
-    setfrontendfilters(FEFilters);
-  };
+  // const handleFEFilterChange = () => {
+  //   console.log("inside FE filter change")
+  //   const FEFilters = {
+  //     region: selectedregion,
+  //     transaction_amount: Range,
+  //   };
+  //   setfrontendfilters(FEFilters);
+  // };
 
   // const EditSpec={}
   // const EditSpec1={"color":"region", "y_title":"Count of Sales"}
 
   useEffect(() => {  
     handleBEFilterChange()
-  }, [selectedProductCategory])  //add Range filter here if necessary
-  useEffect(() => {  
-    handleFEFilterChange()
-  }, [selectedregion, Range])  //add Range filter here if necessary
+  }, [selectedregion,selectedProductCategory,Range]) 
+  // useEffect(() => {  
+  //   handleFEFilterChange()
+  // }, [selectedregion, Range]) 
 
 
   return (
     <div>
         <h1 className='heading'>Sales Dashboard</h1>
         <div className='filters'>
-          <Dropdown
+          {/* <Dropdown
                 label='Regions '
-                options={["All","Asia","Americas","Oceania","Africa","Europe"]}
+                options={["ALL","Asia","Americas","Oceania","Africa","Europe"]}
                 value={selectedregion}
                 onChange={(value:string)=> {
-                  setSelectedRegion([value]);
+                  setSelectedRegion(value);
                 }}
-          />
+          /> */}
           <Dropdown
                 label='Product Category'
-                options={["All","Beverages","Clothes","Food","Grocery","Homeware","Toy"]}
+                options={["ALL","Beverages","Clothes","Food","Grocery","Homeware","Toy"]}
                 value={selectedProductCategory}
                 onChange={(value:string)=> {
-                  setselectedProductCategory([value]);
+                  setselectedProductCategory(value);
                 }}
           />
           <RangeInput
@@ -77,24 +113,32 @@ const ParentComponent = () => {
                 value={Range}
                 onChange={setRange}
           />
+          <CheckBoxFilter
+                label='Regions'
+                options={["Asia","Americas","Oceania","Africa","Europe"]}
+                selectedValues={selectedregion}
+                onChange={(values:any) => {
+                    setSelectedRegion(values)
+                }}
+                />
         </div>
        <div className='visualBody'>
         <div className='visual'>
           <h1>Number of Sales per Region</h1>
-          <VisualMount ChartID='15' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
+          <VisualMount ChartID='15' Backendfilters = {backendfilters} EditSpec={{"y_title":"Count of Sales"}}/>
         </div>
-        {/* <div className='visual'>
+        <div className='visual'>
           <h1>Proportion of Sales per Product Category</h1>
-          <VisualMount ChartID='23' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
+          <VisualMount ChartID='23' Backendfilters = {backendfilters}/>
         </div>
         <div className='visual' style={{width:'300px'}}>
           <h1>Average Sales per Day of Week</h1>
-          <VisualMount ChartID='19' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
+          <VisualMount ChartID='19' Backendfilters = {backendfilters} EditSpec={{"y_title":"Average Transaction Amount", "x_title":"Day of Week"}}/>
         </div>
         <div className='visual'>
           <h1>Average Sales per Year</h1>
-              <VisualMount ChartID='21' Frontendfilters = {frontendfilters} Backendfilters = {backendfilters}/>
-        </div> */}
+              <VisualMount ChartID='21' Backendfilters = {backendfilters} EditSpec={{"y_title":"Average Transaction Amount", "x_title":"Year"}}/>
+        </div>
         </div> 
     </div>
   )

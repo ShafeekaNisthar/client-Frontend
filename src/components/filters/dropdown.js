@@ -2,7 +2,7 @@ import React from 'react';
 
 const Dropdown = ({ label, options, value, onChange }) => {
   return (
-    <div>
+    <div className='dropdown'>
     <label>
       {label}:
       <select value={value} onChange={(e) => onChange(e.target.value)}>

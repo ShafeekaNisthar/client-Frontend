@@ -13,13 +13,19 @@
 }
 
 .filters{
-    margin: 2rem 3rem;
+    width: 1450px;
+    margin: 1rem 2rem;
     display: flex;
     flex-direction: row;
     font-family: AvertaStd-Bold;
     font-size: 18px;
     font-style: normal;
     font-weight: 200;
+    background-color: rgb(124, 164, 197);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    justify-content: space-between;
 
 }
 
@@ -56,3 +62,16 @@
     /* -webkit-background-clip: text; */
     /* -webkit-text-fill-color: transparent; */
 }
+
+.range {
+    display: flex; /* Use flexbox to align items */
+  }
+  
+.range input {
+margin-right: 5px; /* Add space between the input boxes */
+border-radius: 5px;
+
+}
+ 
+
+  
