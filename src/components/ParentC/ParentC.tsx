@@ -2,11 +2,11 @@
 import Dropdown from '../filters/dropdown'
 import RangeInput from '../filters/rangeInput'
 import CheckBoxFilter from '../filters/checkbox'
-import { useState, useEffect, SetStateAction } from 'react'
+import { useState, useEffect } from 'react'
 import './ParentC.css'
 import { VisualMount, CreateBEFilter } from 'cerulean-bi-react'
 // import CreateBEFilters from '../filters/CreateBEFilters'
-// import getUniqueValues from '../filters/UniqueValues'
+import getUniqueValues from '../filters/UniqueValues'
 
 
 
@@ -16,6 +16,7 @@ const ParentComponent = () => {
   const [selectedregion, setSelectedRegion] = useState([]);
   const [selectedProductCategory, setselectedProductCategory] = useState(initialDropdown);
   const [Range, setRange] = useState(initialRange)
+  const [lists, setlists] = useState({region:[],product_field:[]})
   
   const [backendfilters, setbackendfilters] = useState<any>({})
 
@@ -25,8 +26,23 @@ const ParentComponent = () => {
   // })
 
   // getting unique values
-  // const regions = getUniqueValues("v10500", "region")
-  // console.log("from unique values:", regions)
+  useEffect(() => {
+    async function fetchData() {
+        const regions = await getUniqueValues("v10500", "region");
+        const products = await getUniqueValues("v10500", "product_field");
+
+        setlists({
+          region: regions,
+          product_field: products
+        });
+    }
+
+      fetchData();
+  }, []);
+
+  useEffect(() => {
+      console.log(lists);
+  }, [lists]);
 
   const handleBEFilterChange = () => {
 
@@ -113,16 +129,20 @@ const ParentComponent = () => {
                 value={Range}
                 onChange={setRange}
           />
-          <CheckBoxFilter
+          {lists.region ? (
+            <CheckBoxFilter
                 label='Regions'
-                options={["Asia","Americas","Oceania","Africa","Europe"]}
+                options={lists.region}
                 selectedValues={selectedregion}
                 onChange={(values:any) => {
                     setSelectedRegion(values)
                 }}
-                />
+              />
+              ) : (
+                  <p>Loading...</p>
+              )}
         </div>
-       <div className='visualBody'>
+       {/* <div className='visualBody'>
         <div className='visual'>
           <h1>Number of Sales per Region</h1>
           <VisualMount ChartID='15' Backendfilters = {backendfilters} EditSpec={{"y_title":"Count of Sales"}}/>
@@ -137,9 +157,9 @@ const ParentComponent = () => {
         </div>
         <div className='visual'>
           <h1>Average Sales per Year</h1>
-              <VisualMount ChartID='21' Backendfilters = {backendfilters} EditSpec={{"y_title":"Average Transaction Amount", "x_title":"Year"}}/>
+          <VisualMount ChartID='21' Backendfilters = {backendfilters} EditSpec={{"y_title":"Average Transaction Amount", "x_title":"Year"}}/>
         </div>
-        </div> 
+        </div>  */}
     </div>
   )
 }

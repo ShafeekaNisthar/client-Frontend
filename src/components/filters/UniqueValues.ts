@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-async function getUniqueValues(table: string, column: string): Promise<any[]> {
+async function getUniqueValues(table: string, column: string) {
     try {
         const params = {
-            tableName: table,
-            columnName: column,
+            table: table,
+            columns: column,
         };
 
-        const response = await axios.get(`http://localhost:3000/ForwardRequest/UniqueValues`, {
+        const response = await axios.get(`http://localhost:3000/api/unique-values`, {
             params,
             headers: {
                 'Content-Type': 'application/json',
@@ -15,9 +15,9 @@ async function getUniqueValues(table: string, column: string): Promise<any[]> {
         });
 
         if (response.status === 200) {
-            const UniqueValues = response.data;
-            console.log('received from frontend Server:', UniqueValues);
-            return UniqueValues;
+            const uniqueValues = await response.data.data; // Updated this line
+            // console.log('received from frontend Server:', uniqueValues);
+            return uniqueValues;
         } else {
             throw new Error('Failed to process from frontend Server');
         }
