@@ -19,7 +19,7 @@ const DefineFilter = ({ table, column, operator, values }: DefineFilterProps) =>
     return filter;
 };
 
-const CreateBEFilters = (filterDefinitions: DefineFilterProps[]) => {
+const CreateBEFilters = (filterDefinitions: DefineFilterProps[], compound?: { compound_operator: string, filters: string[] }) => {
     if (!Array.isArray(filterDefinitions)) {
         throw new Error('Invalid filter definitions. An array of filter definitions is required.');
     }
@@ -32,7 +32,9 @@ const CreateBEFilters = (filterDefinitions: DefineFilterProps[]) => {
         return [filter.filtername, DefineFilter(filter)];
     }));
 
-    return { filters };
+    const filterObject = {filters, compound}
+
+    return { filterObject };
 };
 
 export default CreateBEFilters;

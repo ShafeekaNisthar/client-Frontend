@@ -4,7 +4,7 @@ import RangeInput from '../filters/rangeInput'
 import CheckBoxFilter from '../filters/checkbox'
 import { useState, useEffect } from 'react'
 import './ParentC.css'
-import { VisualMount, CreateBEFilter } from 'cerulean-bi-react'
+import { VisualMount, CreateFilters } from 'cerulean-bi-react'
 // import CreateBEFilters from '../filters/CreateBEFilters'
 import getUniqueValues from '../filters/UniqueValues'
 
@@ -19,47 +19,44 @@ const ParentComponent = () => {
   const [lists, setlists] = useState({region:[],product_field:[]})
   
   const [backendfilters, setbackendfilters] = useState<any>({})
-
-  // const [frontendfilters, setfrontendfilters] = useState<any>({
-  //   region: initialDropdown,
-  //   transaction_amount: initialRange,
-  // })
+  const [frontendfilters, setfrontendfilters] = useState<any>({})
 
   // getting unique values
   useEffect(() => {
     async function fetchData() {
         const regions = await getUniqueValues("v10500", "region");
         const products = await getUniqueValues("v10500", "product_field");
+        const productslist:any = ["ALL", ...products]
 
         setlists({
           region: regions,
-          product_field: products
+          product_field:productslist
         });
     }
 
       fetchData();
   }, []);
 
-  useEffect(() => {
-      console.log(lists);
-  }, [lists]);
+  // useEffect(() => {
+  //     console.log(lists);
+  // }, [lists]);
 
   const handleBEFilterChange = () => {
 
-   const filterDefinitions = [
+   const BEfilterDefinitions = [
+          {
+                filtername: "filter2",
+                table: "v10500",
+                column: "product_field",
+                operator: "In",
+                values: [selectedProductCategory],
+          },
           {
               filtername: "filter1",
               table: "v10500",
               column: "region",
               operator: "In",
               values: selectedregion.length === 0 ? ["ALL"] : selectedregion,
-          },
-          {
-              filtername: "filter2",
-              table: "v10500",
-              column: "product_field",
-              operator: "In",
-              values: [selectedProductCategory],
           },
           {
               filtername: "filter3",
@@ -75,22 +72,36 @@ const ParentComponent = () => {
               operator: "GreaterThan",
               values: Range[0],
           },
-      ];
+    ];
 
-    const BEFilters = CreateBEFilter(filterDefinitions)
+    // const compoundFilter = {
+    //   compound_operator: "and",
+    //   filters: ["filter2", "filter3"]
+    // };
+
+    const BEFilters = CreateFilters(BEfilterDefinitions)
     
-    console.log(BEFilters)
+    console.log("BEfilters:",BEFilters)
   
     setbackendfilters(BEFilters);
   };
 
   // const handleFEFilterChange = () => {
-  //   console.log("inside FE filter change")
-  //   const FEFilters = {
-  //     region: selectedregion,
-  //     transaction_amount: Range,
-  //   };
-  //   setfrontendfilters(FEFilters);
+  //   // console.log("inside FE filter change")
+  //   const FEfilterDefinitions = [
+  //     {
+  //             filtername: "filter2",
+  //             table: "v10500",
+  //             column: "product_field",
+  //             operator: "In",
+  //             values: [selectedProductCategory],
+  //     }
+  //   ]
+
+  //   const FEfilters = CreateFilters(FEfilterDefinitions) 
+  //   // console.log(FEfilters)
+
+  //   setfrontendfilters(FEfilters);
   // };
 
   // const EditSpec={}
@@ -98,10 +109,10 @@ const ParentComponent = () => {
 
   useEffect(() => {  
     handleBEFilterChange()
-  }, [selectedregion,selectedProductCategory,Range]) 
+  }, [selectedregion,Range,selectedProductCategory]) 
   // useEffect(() => {  
   //   handleFEFilterChange()
-  // }, [selectedregion, Range]) 
+  // }, [selectedProductCategory]) 
 
 
   return (
@@ -142,10 +153,10 @@ const ParentComponent = () => {
                   <p>Loading...</p>
               )}
         </div>
-       {/* <div className='visualBody'>
+       <div className='visualBody'>
         <div className='visual'>
           <h1>Number of Sales per Region</h1>
-          <VisualMount ChartID='15' Backendfilters = {backendfilters} EditSpec={{"y_title":"Count of Sales"}}/>
+          <VisualMount ChartID='15' Backendfilters = {backendfilters}  EditSpec={{"y_title":"Count of Sales"}}/> {/* Frontendfilters={frontendfilters} */}
         </div>
         <div className='visual'>
           <h1>Proportion of Sales per Product Category</h1>
@@ -159,7 +170,7 @@ const ParentComponent = () => {
           <h1>Average Sales per Year</h1>
           <VisualMount ChartID='21' Backendfilters = {backendfilters} EditSpec={{"y_title":"Average Transaction Amount", "x_title":"Year"}}/>
         </div>
-        </div>  */}
+        </div> 
     </div>
   )
 }

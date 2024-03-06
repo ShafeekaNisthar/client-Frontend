@@ -9,9 +9,9 @@ async function getUniqueValues(table: string, column: string) {
 
         const response = await axios.get(`http://localhost:3000/api/unique-values`, {
             params,
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            // headers: {
+            //     'Content-Type': 'application/json',
+            // },
         });
 
         if (response.status === 200) {
