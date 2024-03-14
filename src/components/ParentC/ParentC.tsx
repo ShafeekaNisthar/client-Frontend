@@ -5,15 +5,30 @@ import CheckBoxFilter from '../filters/checkbox'
 import { useState, useEffect } from 'react'
 import './ParentC.css'
 import { VisualMount, CreateFilters } from 'cerulean-bi-react'
-// import CreateBEFilters from '../filters/CreateBEFilters'
 import getUniqueValues from '../filters/UniqueValues'
 
+interface DefineFilterProps {
+  filtername: string;
+  table: string;
+  column: string;
+  operator: string;
+  values: any;
+}
 
+interface CompoundFilter {
+  compound_operator: string;
+  filters: (string | CompoundFilter)[];
+}
+
+interface FilterObject {
+  filters: { [key: string]: any };
+  compound?: CompoundFilter ;
+}
 
 const ParentComponent = () => {
   const initialDropdown = "ALL" 
   const initialRange = [ -800001, 250000 ];
-  const [selectedregion, setSelectedRegion] = useState([]);
+  const [selectedregion, setSelectedRegion] = useState<string[]>([]);
   const [selectedProductCategory, setselectedProductCategory] = useState(initialDropdown);
   const [Range, setRange] = useState(initialRange)
   const [lists, setlists] = useState({region:[],product_field:[]})
@@ -37,13 +52,10 @@ const ParentComponent = () => {
       fetchData();
   }, []);
 
-  // useEffect(() => {
-  //     console.log(lists);
-  // }, [lists]);
 
   const handleBEFilterChange = () => {
 
-   const BEfilterDefinitions = [
+   const BEfilterDefinitions:DefineFilterProps[] = [
           {
                 filtername: "filter2",
                 table: "v10500",
@@ -86,47 +98,18 @@ const ParentComponent = () => {
     setbackendfilters(BEFilters);
   };
 
-  // const handleFEFilterChange = () => {
-  //   // console.log("inside FE filter change")
-  //   const FEfilterDefinitions = [
-  //     {
-  //             filtername: "filter2",
-  //             table: "v10500",
-  //             column: "product_field",
-  //             operator: "In",
-  //             values: [selectedProductCategory],
-  //     }
-  //   ]
-
-  //   const FEfilters = CreateFilters(FEfilterDefinitions) 
-  //   // console.log(FEfilters)
-
-  //   setfrontendfilters(FEfilters);
-  // };
-
   // const EditSpec={}
   // const EditSpec1={"color":"region", "y_title":"Count of Sales"}
 
   useEffect(() => {  
     handleBEFilterChange()
-  }, [selectedregion,Range,selectedProductCategory]) 
-  // useEffect(() => {  
-  //   handleFEFilterChange()
-  // }, [selectedProductCategory]) 
+  }, [selectedregion,Range,selectedProductCategory,handleBEFilterChange()]) 
 
 
   return (
     <div>
         <h1 className='heading'>Sales Dashboard</h1>
         <div className='filters'>
-          {/* <Dropdown
-                label='Regions '
-                options={["ALL","Asia","Americas","Oceania","Africa","Europe"]}
-                value={selectedregion}
-                onChange={(value:string)=> {
-                  setSelectedRegion(value);
-                }}
-          /> */}
           <Dropdown
                 label='Product Category'
                 options={["ALL","Beverages","Clothes","Food","Grocery","Homeware","Toy"]}
@@ -145,7 +128,7 @@ const ParentComponent = () => {
                 label='Regions'
                 options={lists.region}
                 selectedValues={selectedregion}
-                onChange={(values:any) => {
+                onChange={(values:string[]) => {
                     setSelectedRegion(values)
                 }}
               />
