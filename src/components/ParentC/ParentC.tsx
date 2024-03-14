@@ -33,7 +33,7 @@ const ParentComponent = () => {
   const [Range, setRange] = useState(initialRange)
   const [lists, setlists] = useState({region:[],product_field:[]})
   
-  const [backendfilters, setbackendfilters] = useState<any>({})
+  const [backendfilters, setbackendfilters] = useState<FilterObject | {}>({})
   const [frontendfilters, setfrontendfilters] = useState<any>({})
 
   // getting unique values
@@ -93,7 +93,7 @@ const ParentComponent = () => {
 
     const BEFilters = CreateFilters(BEfilterDefinitions)
     
-    console.log("BEfilters:",BEFilters)
+    // console.log("BEfilters:",BEFilters)
   
     setbackendfilters(BEFilters);
   };
