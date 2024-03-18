@@ -4,7 +4,7 @@ import RangeInput from '../filters/rangeInput'
 import CheckBoxFilter from '../filters/checkbox'
 import { useState, useEffect } from 'react'
 import './ParentC.css'
-import { VisualMount, CreateFilters } from 'cerulean-bi-react'
+import { VisualMount, CreateFilters, GetMetaData } from 'cerulean-bi-react'
 import getUniqueValues from '../filters/UniqueValues'
 
 interface DefineFilterProps {
@@ -24,6 +24,10 @@ interface FilterObject {
   filters: { [key: string]: any };
   compound?: CompoundFilter ;
 }
+
+//get MetaData info
+const metadata = GetMetaData()
+console.log("MetaData information:", metadata)
 
 const ParentComponent = () => {
   const initialDropdown = "ALL" 
@@ -103,7 +107,7 @@ const ParentComponent = () => {
 
   useEffect(() => {  
     handleBEFilterChange()
-  }, [selectedregion,Range,selectedProductCategory,handleBEFilterChange()]) 
+  }, [selectedregion,Range,selectedProductCategory]) 
 
 
   return (
@@ -141,7 +145,7 @@ const ParentComponent = () => {
           <h1>Number of Sales per Region</h1>
           <VisualMount ChartID='15' Backendfilters = {backendfilters}  EditSpec={{"y_title":"Count of Sales"}}/> {/* Frontendfilters={frontendfilters} */}
         </div>
-        <div className='visual'>
+        {/* <div className='visual'>
           <h1>Proportion of Sales per Product Category</h1>
           <VisualMount ChartID='23' Backendfilters = {backendfilters}/>
         </div>
@@ -152,7 +156,7 @@ const ParentComponent = () => {
         <div className='visual'>
           <h1>Average Sales per Year</h1>
           <VisualMount ChartID='21' Backendfilters = {backendfilters} EditSpec={{"y_title":"Average Transaction Amount", "x_title":"Year"}}/>
-        </div>
+        </div> */}
         </div> 
     </div>
   )
